@@ -1,7 +1,37 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { auth } from '../config/firebase';
-import { onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth';
-import { authAPI } from '../services/api';
+// import { auth } from '../config/firebase';
+// import { onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth';
+// import { authAPI } from '../services/api';
+import { mockAuthAPI as authAPI } from '../services/mockApi';
+
+// Mock auth for development
+const mockAuth = {
+    currentUser: null,
+    signOut: async () => {
+        mockAuth.currentUser = null;
+    }
+};
+
+// Mock onAuthStateChanged - Firebase style (auth, callback)
+const onAuthStateChanged = (authInstance, callback) => {
+    // Simulate logged in user after a delay
+    setTimeout(() => {
+        mockAuth.currentUser = {
+            uid: 'mock-uid-123',
+            email: '2051120001@vku.udn.vn',
+            displayName: 'Nguyễn Văn An',
+            photoURL: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+            getIdToken: async () => 'mock-token-123'
+        };
+        callback(mockAuth.currentUser);
+    }, 500);
+
+    // Return unsubscribe function
+    return () => { };
+};
+
+const auth = mockAuth;
+const firebaseSignOut = mockAuth.signOut;
 
 const AuthContext = createContext();
 

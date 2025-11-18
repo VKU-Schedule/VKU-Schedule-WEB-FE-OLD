@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { studentAPI } from '../services/api';
+// import { studentAPI } from '../services/api';
+import { mockStudentAPI as studentAPI } from '../services/mockApi';
 import { BookOpen, Calendar, LogOut, CheckCircle } from 'lucide-react';
 
 const Home = () => {
@@ -91,8 +92,8 @@ const Home = () => {
                     <button
                         onClick={() => setActiveTab('available')}
                         className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition ${activeTab === 'available'
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-white text-gray-700 hover:bg-gray-50'
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-white text-gray-700 hover:bg-gray-50'
                             }`}
                     >
                         <BookOpen size={20} />
@@ -101,8 +102,8 @@ const Home = () => {
                     <button
                         onClick={() => setActiveTab('enrolled')}
                         className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition ${activeTab === 'enrolled'
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-white text-gray-700 hover:bg-gray-50'
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-white text-gray-700 hover:bg-gray-50'
                             }`}
                     >
                         <Calendar size={20} />

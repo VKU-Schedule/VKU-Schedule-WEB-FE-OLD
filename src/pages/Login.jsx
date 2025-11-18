@@ -1,8 +1,24 @@
 import React, { useState } from 'react';
-import { signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from '../config/firebase';
+// import { signInWithPopup } from 'firebase/auth';
+// import { auth, googleProvider } from '../config/firebase';
 import { useNavigate } from 'react-router-dom';
 import { LogIn } from 'lucide-react';
+
+// Mock Firebase auth for development
+const mockSignInWithPopup = async () => {
+    return {
+        user: {
+            uid: 'mock-uid-123',
+            email: '2051120001@vku.udn.vn',
+            displayName: 'Nguyễn Văn An',
+            photoURL: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'
+        }
+    };
+};
+
+const signInWithPopup = mockSignInWithPopup;
+const auth = { signOut: async () => { } };
+const googleProvider = {};
 
 const Login = () => {
     const [error, setError] = useState('');
