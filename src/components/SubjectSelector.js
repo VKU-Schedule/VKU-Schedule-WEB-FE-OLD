@@ -10,6 +10,7 @@ function SubjectSelector() {
   const [subjects, setSubjects] = useState([]);
   const [noteText, setNoteText] = useState('');
   const suggestionBoxRef = useRef(null);
+  const inputRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -18,19 +19,34 @@ function SubjectSelector() {
     localStorage.removeItem('schedule_payload');
   }, []);
 
+  // Handle click outside to close suggestions
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (suggestionBoxRef.current && !suggestionBoxRef.current.contains(event.target) &&
+          inputRef.current && !inputRef.current.contains(event.target)) {
+        setSuggestions([]);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const handleInputChange = (e) => {
-    const query = e.target.value.trim();
+    const query = e.target.value;
     setSubjectInput(query);
 
-    if (!query) {
+    if (!query.trim()) {
       setSuggestions([]);
       return;
     }
 
-    const payload = { query };
+    const payload = { query: query.trim() };
 
     // ('http://127.0.0.1:8001/api/search-recommend'
-    fetch('http://20.29.23.53:8001/api/search-recommend', {
+    fetch('http://20.106.16.223:8001/api/search-recommend', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -83,10 +99,11 @@ function SubjectSelector() {
   };
 
   const removeSubject = (id) => {
-    setSubjects(subjects.filter(subject => subject.id !== id));
+    const updatedSubjects = subjects.filter(subject => subject.id !== id);
     // Update IDs to be sequential
-    setSubjects(prev => prev.map((subject, idx) => ({ ...subject, id: idx + 1 })));
-    setCount(prev => prev - 1);
+    const reindexedSubjects = updatedSubjects.map((subject, idx) => ({ ...subject, id: idx + 1 }));
+    setSubjects(reindexedSubjects);
+    setCount(reindexedSubjects.length);
   };
 
   const toggleWant = (id) => {
@@ -122,32 +139,35 @@ function SubjectSelector() {
       <h2>HÃY CHO CHÚNG TÔI BIẾT:</h2>
 
       <label htmlFor="subject">Môn Học</label>
-      <input 
-        type="text" 
-        id="subject" 
-        placeholder="Nhập tên môn học"
-        value={subjectInput}
-        onChange={handleInputChange}
-        autoComplete="off"
-      />
-      
-      {suggestions.length > 0 && (
-        <ul id="suggestionBox" ref={suggestionBoxRef}>
-          {suggestions.map((suggestion, index) => (
-            <li 
-              key={index} 
-              onClick={() => {
-                if (suggestion !== 'Không tìm thấy kết quả phù hợp.' && 
-                    suggestion !== 'Không thể tải gợi ý...') {
-                  addSubject(suggestion);
-                }
-              }}
-            >
-              {suggestion}
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="search-container">
+        <input 
+          ref={inputRef}
+          type="text" 
+          id="subject" 
+          placeholder="Nhập tên môn học"
+          value={subjectInput}
+          onChange={handleInputChange}
+          autoComplete="off"
+        />
+        
+        {suggestions.length > 0 && (
+          <ul id="suggestionBox" ref={suggestionBoxRef}>
+            {suggestions.map((suggestion, index) => (
+              <li 
+                key={index} 
+                onClick={() => {
+                  if (suggestion !== 'Không tìm thấy kết quả phù hợp.' && 
+                      suggestion !== 'Không thể tải gợi ý...') {
+                    addSubject(suggestion);
+                  }
+                }}
+              >
+                {suggestion}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       <table id="subjectTable">
         <thead>

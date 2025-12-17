@@ -10,11 +10,87 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  
+  .loading-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    min-width: 400px;
+  }
+  
+  .loading-spinner {
+    font-size: 48px;
+    animation: spin 2s linear infinite;
+    margin-bottom: 20px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loading-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
   }
   
   .loading-text {
-    font-size: 24px;
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 30px;
+    min-height: 25px;
+  }
+  
+  .progress-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .progress-bar {
+    flex: 1;
+    height: 12px;
+    background-color: #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #45a049);
+    border-radius: 6px;
+    transition: width 0.5s ease;
+    position: relative;
+  }
+  
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 1.5s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  
+  .progress-percentage {
+    font-size: 16px;
     font-weight: bold;
+    color: #333;
+    min-width: 45px;
   }
   
   .error-container {
@@ -38,10 +114,126 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
-  h1 {
-    text-align: center;
-    color: #3c763d;
+  .schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  h1 {
+    color: #3c763d;
+    margin: 0;
+    flex: 1;
+    text-align: center;
+  }
+
+  .export-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .export-btn {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+  }
+
+  .google-btn {
+    background: linear-gradient(135deg, #4285f4, #34a853);
+  }
+
+  .google-btn:hover {
+    background: linear-gradient(135deg, #34a853, #4285f4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  .more-btn {
+    background: linear-gradient(135deg, #6c757d, #495057);
+  }
+
+  .more-btn:hover {
+    background: linear-gradient(135deg, #495057, #6c757d);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  .export-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .export-all-container {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 12px;
+    border: 2px dashed #6c757d;
+  }
+
+  .export-all-btn {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .export-all-btn:hover {
+    background: linear-gradient(135deg, #0056b3, #007bff);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  }
+
+  .export-all-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .schedule-header {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .export-buttons {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .export-btn {
+      flex: 1;
+      justify-content: center;
+      min-width: 120px;
+    }
+
+    .export-all-btn {
+      width: 100%;
+      justify-content: center;
+    }
   }
   
   .score-display {
